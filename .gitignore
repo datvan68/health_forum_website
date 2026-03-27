@@ -16,4 +16,5 @@ Thumbs.db
 *.user
 *.suo
 *.swp
-frontend/.mcp/ 
+frontend/.mcp/
+agents/
