@@ -23,6 +23,18 @@ public class Expert
     public bool IsVerified { get; set; } = false;
     public bool IsOnline { get; set; } = false;
 
+    [MaxLength(500)]
+    public string? Bio { get; set; }
+
+    [MaxLength(100)]
+    public string? Location { get; set; }
+
+    public int HealthScore { get; set; } = 0;
+
+    public string? CoverImageUrl { get; set; }
+
+    public List<ExpertBadgeMapping> BadgeMappings { get; set; } = new();
+
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }
     public DateTime? DeletedAt { get; set; }

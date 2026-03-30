@@ -1,0 +1,70 @@
+{
+  "profile": {
+    "id": 1,
+    "fullName": "Elena Rodriguez",
+    "title": "Molecular Biologist",
+    "specialty": "Certified Health Sponsor",
+    "avatarUrl": "http://localhost:3845/assets/ff4b95eeceafc2f1ced0979fbd6905029f345ab1.png",
+    "coverImageUrl": "http://localhost:3845/assets/3df22b4dfa519e2ac4c4f89bc2f89b733f1953a1.png",
+    "isVerified": true,
+    "bio": "Nhà sinh học phân tử & Chiến lược gia chăm sóc sức khỏe. Đam mê nghiên cứu về sự trường thọ và các quy trình dinh dưỡng dựa trên bằng chứng.",
+    "location": "Hà Nội, Việt Nam",
+    "healthScore": 12480,
+    "joinDate": "2023-03-01T00:00:00Z",
+    "badges": [
+      {
+        "id": 1,
+        "name": "Bậc thầy nghiên cứu",
+        "iconUrl": "http://localhost:3845/assets/7740b49d833f02b506ef6032ed7477be8b2f1207.svg",
+        "isEarned": true
+      },
+      {
+        "id": 2,
+        "name": "Chuyên gia sinh học",
+        "iconUrl": "http://localhost:3845/assets/01509308d7a1a6610821159eed51db6e70a29224.svg",
+        "isEarned": true
+      },
+      {
+        "id": 3,
+        "name": "Người đánh giá hàng đầu",
+        "iconUrl": "http://localhost:3845/assets/be4bae3119c46f20c0489d0632591ad3dee3a1b4.svg",
+        "isEarned": true
+      },
+      {
+        "id": 4,
+        "name": "Người hướng dẫn",
+        "iconUrl": "http://localhost:3845/assets/c292416109fb07332b5943ae0a7a05b5cb2af165.svg",
+        "isEarned": false
+      }
+    ]
+  },
+  "posts": [
+    {
+      "id": 101,
+      "title": "Trục Não - Ruột: Cái nhìn sâu hơn về chứng mệt mỏi mãn tính",
+      "snippet": "Thảo luận về các thử nghiệm lâm sàng mới nhất liên quan đến các chủng lợi khuẩn và tác động trực tiếp của chúng lên các con đường tín hiệu thần kinh...",
+      "category": "Nghiên cứu",
+      "createdAt": "2026-03-26T10:00:00Z",
+      "commentCount": 42,
+      "likeCount": 156
+    },
+    {
+      "id": 102,
+      "title": "Chu kỳ vĩ mô cho sự linh hoạt trong trao đổi chất: Kết quả 90 ngày của tôi",
+      "snippet": "Phân tích dữ liệu sinh trắc học của tôi sau khi thực hiện phương pháp bổ sung carbohydrate so le tập trung vào phục hồi thể thao...",
+      "category": "Dinh dưỡng",
+      "createdAt": "2026-03-21T15:00:00Z",
+      "commentCount": 24,
+      "likeCount": 89
+    },
+    {
+      "id": 103,
+      "title": "Ngâm lạnh vs Xông hơi: Phân tích căng thẳng có lợi",
+      "snippet": "So sánh phản ứng cortisol và các dấu hiệu viêm giữa quy trình tiếp xúc nóng và lạnh dựa trên những phát hiện gần đây của UCLA...",
+      "category": "Trường thọ",
+      "createdAt": "2026-03-14T09:00:00Z",
+      "commentCount": 15,
+      "likeCount": 62
+    }
+  ]
+}

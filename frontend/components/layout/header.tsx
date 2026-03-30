@@ -14,7 +14,7 @@ export function Header() {
         <Link href="/" className="flex items-center gap-2">
           <span className="text-2xl font-bold font-inter tracking-[-1.2px] text-[#1e3a8a]">
             Clinical Atelier
-          </span>
+          </span> 
         </Link>
 
         {/* Navigation */}
