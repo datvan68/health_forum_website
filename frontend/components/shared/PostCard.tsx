@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MessageSquare, ThumbsUp, Calendar } from "lucide-react";
+import { MessageSquare, ThumbsUp } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
 
 interface PostCardProps {
   title: string;
@@ -11,6 +12,8 @@ interface PostCardProps {
   createdAt: string;
   commentCount: number;
   likeCount: number;
+  commentIconUrl?: string;
+  likeIconUrl?: string;
   idx?: number;
 }
 
@@ -21,6 +24,8 @@ export function PostCard({
   createdAt,
   commentCount,
   likeCount,
+  commentIconUrl,
+  likeIconUrl,
   idx = 0,
 }: PostCardProps) {
   const getCategoryStyles = (cat: string) => {
@@ -61,11 +66,19 @@ export function PostCard({
 
       <div className="mt-auto pt-4 border-t border-[rgba(194,198,212,0.1)] flex gap-6 items-center">
         <div className="flex items-center gap-1.5 text-[#424752] text-xs font-semibold">
-          <MessageSquare size={14} className="text-[#424752]" />
+          {commentIconUrl ? (
+            <Image src={commentIconUrl} alt="Comments" width={13.333} height={13.333} />
+          ) : (
+            <MessageSquare size={14} className="text-[#424752]" />
+          )}
           <span>{commentCount} Bình luận</span>
         </div>
         <div className="flex items-center gap-1.5 text-[#424752] text-xs font-semibold">
-          <ThumbsUp size={14} className="text-[#424752]" />
+          {likeIconUrl ? (
+            <Image src={likeIconUrl} alt="Likes" width={14} height={13.333} />
+          ) : (
+            <ThumbsUp size={14} className="text-[#424752]" />
+          )}
           <span>{likeCount} Lượt thích</span>
         </div>
       </div>

@@ -1,4 +1,8 @@
 using backend.ViewModels;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace backend.Services;
 
@@ -8,28 +12,37 @@ public interface IAuthService
     Task<bool> RegisterAsync(RegisterViewModel model);
 }
 
+public class MockUserEntry
+{
+    public UserProfile Profile { get; set; } = new();
+    public string PasswordHash { get; set; } = string.Empty;
+}
+
 public class AuthService : IAuthService
 {
-    // Mock user list - updated during session
-    private static readonly List<UserProfile> _mockUsers = new()
+    private static readonly List<MockUserEntry> _mockUsers = new()
     {
-        new UserProfile { Id = "1", Username = "admin", Email = "admin@clinic.com" }
+        new MockUserEntry 
+        { 
+            Profile = new UserProfile { Id = "1", Username = "admin", Email = "admin@clinic.com" },
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword("password123")
+        }
     };
+
+    private readonly string _jwtKey = "SuperSecretKeyForHealthForumWebsite2026!";
 
     public async Task<LoginResponse?> LoginAsync(LoginViewModel model)
     {
-        // Check both email and username as we used Email as username in login
-        var user = _mockUsers.FirstOrDefault(u => 
-            (u.Username == model.Username || u.Email == model.Username) && 
-            model.Password == "password123");
+        var userEntry = _mockUsers.FirstOrDefault(u => 
+            (u.Profile.Username == model.Username || u.Profile.Email == model.Username));
 
-        if (user != null)
+        if (userEntry != null && BCrypt.Net.BCrypt.Verify(model.Password, userEntry.PasswordHash))
         {
             return new LoginResponse
             {
-                AccessToken = "eye.mock.jwt.token",
-                RefreshToken = "eye.mock.refresh.token",
-                User = user
+                AccessToken = GenerateJwtToken(userEntry.Profile),
+                RefreshToken = "mock.refresh.token.for.now",
+                User = userEntry.Profile
             };
         }
 
@@ -39,7 +52,7 @@ public class AuthService : IAuthService
     public async Task<bool> RegisterAsync(RegisterViewModel model)
     {
         if (model.Password != model.ConfirmPassword) return false;
-        if (_mockUsers.Any(u => u.Email == model.Email)) return false;
+        if (_mockUsers.Any(u => u.Profile.Email == model.Email)) return false;
 
         var newUser = new UserProfile
         {
@@ -48,7 +61,33 @@ public class AuthService : IAuthService
             Email = model.Email
         };
 
-        _mockUsers.Add(newUser);
+        _mockUsers.Add(new MockUserEntry
+        {
+            Profile = newUser,
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password)
+        });
+        
         return true;
+    }
+
+    private string GenerateJwtToken(UserProfile user)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(_jwtKey);
+        
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Email, user.Email)
+            }),
+            Expires = DateTime.UtcNow.AddHours(24),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        };
+        
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
     }
 }

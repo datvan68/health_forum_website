@@ -16,6 +16,9 @@ interface ProfileHeroProps {
   bio: string;
   location: string;
   joinDate: string;
+  locationIconUrl?: string; // New
+  joinIconUrl?: string; // New
+  editIconUrl?: string; // New
 }
 
 export function ProfileHero({
@@ -28,6 +31,9 @@ export function ProfileHero({
   bio,
   location,
   joinDate,
+  locationIconUrl,
+  joinIconUrl,
+  editIconUrl,
 }: ProfileHeroProps) {
   return (
     <section className="relative w-full pb-16">
@@ -107,14 +113,22 @@ export function ProfileHero({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7 }}
-            className="flex gap-4 text-sm font-medium text-[#003f87]"
+            className="flex gap-4 text-sm font-medium text-[#003f87] items-center"
           >
-            <div className="flex items-center gap-1">
-              <MapPin size={16} />
+            <div className="flex items-center gap-1.5">
+              {locationIconUrl ? (
+                <Image src={locationIconUrl} alt="Location" width={9.333} height={11.667} />
+              ) : (
+                <MapPin size={16} />
+              )}
               <span>{location}</span>
             </div>
-            <div className="flex items-center gap-1">
-              <Calendar size={16} />
+            <div className="flex items-center gap-1.5">
+              {joinIconUrl ? (
+                <Image src={joinIconUrl} alt="Calendar" width={10.5} height={11.667} />
+              ) : (
+                <Calendar size={16} />
+              )}
               <span>Tham gia {joinDate}</span>
             </div>
           </motion.div>
@@ -128,7 +142,11 @@ export function ProfileHero({
           className="pb-2"
         >
           <Button className="bg-gradient-to-r from-[#003f87] to-[#0056b3] hover:opacity-90 shadow-md h-11 px-8">
-            <Edit3 className="mr-2 size-4" />
+            {editIconUrl ? (
+              <Image src={editIconUrl} alt="Edit" width={10.5} height={10.5} className="mr-2" />
+            ) : (
+              <Edit3 className="mr-2 size-4" />
+            )}
             Chỉnh sửa hồ sơ
           </Button>
         </motion.div>
