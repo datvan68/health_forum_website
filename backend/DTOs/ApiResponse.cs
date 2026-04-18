@@ -1,4 +1,4 @@
-namespace backend.ViewModels;
+namespace backend.DTOs;
 
 public sealed class ApiResponse<T>
 {

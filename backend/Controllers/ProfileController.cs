@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using backend.Services;
-using backend.ViewModels;
+using backend.DTOs;
 
 namespace backend.Controllers;
 
@@ -26,7 +26,7 @@ public class ProfileController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateProfile(int id, [FromBody] ProfileUpdateViewModel model)
+    public async Task<IActionResult> UpdateProfile(int id, [FromBody] ProfileUpdateRequest model)
     {
         var result = await _profileService.UpdateProfileAsync(id, model);
         if (!result)

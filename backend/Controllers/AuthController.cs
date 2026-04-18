@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using backend.Services;
-using backend.ViewModels;
+using backend.DTOs;
 
 namespace backend.Controllers;
 
@@ -16,7 +16,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginViewModel model)
+    public async Task<IActionResult> Login([FromBody] LoginRequest model)
     {
         var result = await _authService.LoginAsync(model);
         if (result == null)
@@ -26,7 +26,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
+    public async Task<IActionResult> Register([FromBody] RegisterRequest model)
     {
         var result = await _authService.RegisterAsync(model);
         if (!result)

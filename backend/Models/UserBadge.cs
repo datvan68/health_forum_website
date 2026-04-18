@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace backend.Models;
 
-public class ExpertBadge
+public class UserBadge
 {
     [Key]
     public int Id { get; set; }
@@ -17,13 +17,13 @@ public class ExpertBadge
     public string? Description { get; set; }
 }
 
-public class ExpertBadgeMapping
+public class UserBadgeMapping
 {
-    public int ExpertId { get; set; }
-    public Expert Expert { get; set; } = null!;
+    public int UserId { get; set; }
+    public User User { get; set; } = null!;
 
     public int BadgeId { get; set; }
-    public ExpertBadge Badge { get; set; } = null!;
+    public UserBadge Badge { get; set; } = null!;
 
     public bool IsEarned { get; set; } = false;
     public DateTime? EarnedAt { get; set; }

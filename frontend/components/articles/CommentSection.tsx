@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { MessageSquare, Heart, CornerRightDown, Send, Bold, Italic, Link as LinkIcon, Image as ImageIcon } from "lucide-react";
+import { useEffect, useState } from "react";
+import { MessageSquare, Heart, CornerRightDown, Send, Bold, Italic, Link as LinkIcon, Image as ImageIcon, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -21,6 +21,8 @@ interface Comment {
 interface CommentSectionProps {
   comments: Comment[];
   totalComments: number;
+  articleSlug: string;
+  onCommentPosted: () => void;
 }
 
 function CommentItem({ comment }: { comment: Comment }) {
@@ -28,7 +30,11 @@ function CommentItem({ comment }: { comment: Comment }) {
     <div className="flex gap-6 w-full">
       <div className="shrink-0 w-12 h-12">
         <div className="rounded-2xl overflow-hidden border-2 border-white shadow-md w-full h-full">
-          <img src={comment.author.avatar} alt={comment.author.name} className="w-full h-full object-cover" />
+          <img 
+            src={comment.author.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(comment.author.name)}&background=003f87&color=fff&bold=true`} 
+            alt={comment.author.name} 
+            className="w-full h-full object-cover" 
+          />
         </div>
       </div>
       
@@ -71,7 +77,45 @@ function CommentItem({ comment }: { comment: Comment }) {
   );
 }
 
-export function CommentSection({ comments, totalComments }: CommentSectionProps) {
+export function CommentSection({ comments, totalComments, articleSlug, onCommentPosted }: CommentSectionProps) {
+  const [newComment, setNewComment] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async () => {
+    if (!newComment.trim() || isSubmitting) return;
+
+    // Get logged-in user
+    const storedUser = localStorage.getItem("user");
+    if (!storedUser) {
+      alert("Vui lòng đăng nhập để bình luận.");
+      return;
+    }
+    const user = JSON.parse(storedUser);
+
+    setIsSubmitting(true);
+    try {
+      const response = await fetch(`http://localhost:5000/api/articles/${articleSlug}/comments`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ content: newComment, authorId: user.id }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Không thể gửi bình luận");
+      }
+
+      setNewComment("");
+      onCommentPosted();
+    } catch (err) {
+      console.error("Error posting comment:", err);
+      alert("Đã có lỗi xảy ra khi gửi bình luận. Vui lòng thử lại.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="w-full flex flex-col gap-10 py-12 border-t border-[#eceef0] mt-16">
       <div className="flex items-end justify-between px-2">
@@ -83,6 +127,9 @@ export function CommentSection({ comments, totalComments }: CommentSectionProps)
         <textarea 
           placeholder="Viết bình luận chuyên môn của bạn..."
           className="bg-transparent border-none focus:ring-0 w-full min-h-[120px] text-[17px] text-[#191c1e] placeholder-[#727784] resize-none font-medium leading-relaxed"
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          disabled={isSubmitting}
         />
         <div className="flex items-center justify-between border-t border-[#eceef0] pt-6">
           <div className="flex items-center gap-2">
@@ -91,15 +138,26 @@ export function CommentSection({ comments, totalComments }: CommentSectionProps)
             <button className="p-2.5 text-[#727784] hover:bg-white hover:shadow-sm rounded-xl transition-all"><ImageIcon size={20} /></button>
             <button className="p-2.5 text-[#727784] hover:bg-white hover:shadow-sm rounded-xl transition-all"><LinkIcon size={20} /></button>
           </div>
-          <Button className="bg-[#003f87] hover:bg-[#0052cc] text-white px-10 py-3 rounded-xl font-bold text-base transition-all shadow-md">
-            Gửi bình luận
+          <Button 
+            className="bg-[#003f87] hover:bg-[#0052cc] text-white px-10 py-3 rounded-xl font-bold text-base transition-all shadow-md disabled:opacity-70"
+            onClick={handleSubmit}
+            disabled={isSubmitting || !newComment.trim()}
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Đang gửi...
+              </>
+            ) : (
+              "Gửi bình luận"
+            )}
           </Button>
         </div>
       </div>
 
       {/* Comments List */}
       <div className="flex flex-col gap-10 mt-4">
-        {comments.map(comment => (
+        {comments.map((comment: any) => (
           <CommentItem key={comment.id} comment={comment} />
         ))}
       </div>
@@ -110,3 +168,4 @@ export function CommentSection({ comments, totalComments }: CommentSectionProps)
     </div>
   );
 }
+

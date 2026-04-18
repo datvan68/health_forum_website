@@ -1,12 +1,12 @@
 using backend.Models;
 using backend.Repositories;
-using backend.ViewModels;
+using backend.DTOs;
 
 namespace backend.Services;
 
 public interface IPostService
 {
-    Task<PaginatedResponse<PostViewModel>> GetPostsAsync(int page, int pageSize, string sort, string? category = null);
+    Task<PaginatedResponse<PostDto>> GetPostsAsync(int page, int pageSize, string sort, string? category = null);
 }
 
 public sealed class PostService : IPostService
@@ -18,13 +18,13 @@ public sealed class PostService : IPostService
         _repository = repository;
     }
 
-    public async Task<PaginatedResponse<PostViewModel>> GetPostsAsync(int page, int pageSize, string sort, string? category = null)
+    public async Task<PaginatedResponse<PostDto>> GetPostsAsync(int page, int pageSize, string sort, string? category = null)
     {
         var (items, total) = sort == "popular" 
             ? await _repository.GetPopularAsync(page, pageSize, category)
             : await _repository.GetLatestAsync(page, pageSize, category);
 
-        var viewModels = items.Select(p => new PostViewModel(
+        var dtos = items.Select(p => new PostDto(
             p.Id, p.Title, p.Content, p.VoteCount, p.CommentCount, p.IsVerified,
             p.Author?.FullName ?? "Unknown", p.Author?.Title ?? "", p.Author?.Specialty ?? "",
             p.Author?.AvatarUrl, p.CreatedAt
@@ -32,8 +32,8 @@ public sealed class PostService : IPostService
 
         var totalPages = (int)Math.Ceiling(total / (double)pageSize);
 
-        return new PaginatedResponse<PostViewModel>(
-            viewModels,
+        return new PaginatedResponse<PostDto>(
+            dtos,
             new MetaData(page, pageSize, total, totalPages)
         );
     }

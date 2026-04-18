@@ -1,6 +1,6 @@
-namespace backend.ViewModels;
+namespace backend.DTOs;
 
-public class ExpertProfileViewModel
+public class ProfileResponse
 {
     public int Id { get; set; }
     public string FullName { get; set; } = string.Empty;
@@ -15,10 +15,10 @@ public class ExpertProfileViewModel
     public string? ResearchArea { get; set; }
     public string? HighestDegree { get; set; }
     public string? Organization { get; set; }
-    public List<BadgeViewModel> Badges { get; set; } = new();
+    public List<BadgeDto> Badges { get; set; } = new();
 }
 
-public class ProfileUpdateViewModel
+public class ProfileUpdateRequest
 {
     public string FullName { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
@@ -30,7 +30,7 @@ public class ProfileUpdateViewModel
     public string? Organization { get; set; }
 }
 
-public class BadgeViewModel
+public class BadgeDto
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;

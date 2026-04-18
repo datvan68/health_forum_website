@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MessageSquare, ThumbsUp } from "lucide-react";
+import { MessageSquare, ThumbsUp, Pencil, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 
@@ -15,6 +15,8 @@ interface PostCardProps {
   commentIconUrl?: string | null;
   likeIconUrl?: string | null;
   idx?: number;
+  onEdit?: (e: React.MouseEvent) => void;
+  onDelete?: (e: React.MouseEvent) => void;
 }
 
 export function PostCard({
@@ -27,6 +29,8 @@ export function PostCard({
   commentIconUrl,
   likeIconUrl,
   idx = 0,
+  onEdit,
+  onDelete,
 }: PostCardProps) {
   const getCategoryStyles = (cat: string) => {
     switch (cat.toLowerCase()) {
@@ -53,7 +57,39 @@ export function PostCard({
         <Badge className={`${getCategoryStyles(category)} border-none text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-sm`}>
           {category}
         </Badge>
-        <span className="text-[10px] font-medium text-[#727784]">{createdAt}</span>
+        <div className="flex items-center gap-3">
+          <span className="text-[10px] font-medium text-[#727784]">{createdAt}</span>
+          {(onEdit || onDelete) && (
+            <div className="flex items-center gap-1.5 border-l border-slate-100 pl-3 ml-1">
+              {onEdit && (
+                <button 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onEdit(e);
+                  }}
+                  className="p-1.5 hover:bg-blue-50 text-slate-400 hover:text-blue-600 rounded-md transition-all"
+                  title="Chỉnh sửa"
+                >
+                  <Pencil size={14} />
+                </button>
+              )}
+              {onDelete && (
+                <button 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onDelete(e);
+                  }}
+                  className="p-1.5 hover:bg-red-50 text-slate-400 hover:text-red-600 rounded-md transition-all"
+                  title="Xóa bài"
+                >
+                  <Trash2 size={14} />
+                </button>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       <h4 className="text-xl font-bold text-[#191c1e] font-['Manrope',sans-serif] leading-tight mb-3 line-clamp-2">

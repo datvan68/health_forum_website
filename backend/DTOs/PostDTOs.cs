@@ -1,8 +1,6 @@
-using backend.Models;
+namespace backend.DTOs;
 
-namespace backend.ViewModels;
-
-public record PostViewModel(
+public record PostDto(
     int Id,
     string Title,
     string Content,

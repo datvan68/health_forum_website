@@ -22,12 +22,17 @@ interface ResearchSidebarProps {
     role: string;
     bio: string;
     avatar: string;
-  };
+  } | null;
   relatedTopics: string[];
   relatedArticles: RelatedArticle[];
 }
 
 export function ResearchSidebar({ author, relatedTopics, relatedArticles }: ResearchSidebarProps) {
+  const displayName = author?.name || "Tác giả ẩn danh";
+  const displayRole = author?.role || "Thành viên Aegis Health";
+  const displayBio = author?.bio || "Một tác giả uy tín đầy nhiệt huyết, sẵn sàng chia sẻ kiến thức y khoa tới cộng đồng.";
+  const avatarUrl = author?.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=003f87&color=fff&bold=true`;
+
   return (
     <div className="w-full flex flex-col gap-12">
       {/* Author Info Card */}
@@ -36,14 +41,16 @@ export function ResearchSidebar({ author, relatedTopics, relatedArticles }: Rese
           Thông tin tác giả
         </h3>
         
-        <div className="w-24 h-24 rounded-2xl overflow-hidden border-4 border-[#f7f9fb] shadow-md">
-          <img src={author.avatar} alt={author.name} className="w-full h-full object-cover" />
+        <div className="w-24 h-24 rounded-2xl overflow-hidden border-4 border-[#f7f9fb] shadow-md relative">
+          {/* Using standard img but with fallback support */}
+          <img src={avatarUrl} alt={displayName} className="w-full h-full object-cover absolute top-0 left-0" />
         </div>
 
         <div className="flex flex-col gap-2">
-          <h4 className="text-xl font-extrabold text-[#003f87] tracking-tight">{author.name}</h4>
-          <p className="text-sm text-[#424752] leading-relaxed font-medium px-2">
-            {author.bio}
+          <h4 className="text-xl font-extrabold text-[#003f87] tracking-tight">{displayName}</h4>
+          <span className="text-[#424752] text-xs font-semibold uppercase tracking-wider">{displayRole}</span>
+          <p className="text-sm text-[#424752] leading-relaxed font-medium px-2 mt-1">
+            {displayBio}
           </p>
         </div>
 

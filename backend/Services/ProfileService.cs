@@ -2,15 +2,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using backend.Data;
 using backend.Models;
-using backend.ViewModels;
+using backend.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Services
 {
     public interface IProfileService
     {
-        Task<ExpertProfileViewModel?> GetProfileByIdAsync(int id);
-        Task<bool> UpdateProfileAsync(int id, ProfileUpdateViewModel model);
+        Task<ProfileResponse?> GetProfileByIdAsync(int id);
+        Task<bool> UpdateProfileAsync(int id, ProfileUpdateRequest model);
     }
 
     public class ProfileService : IProfileService
@@ -22,16 +22,15 @@ namespace backend.Services
             _context = context;
         }
 
-        public async Task<ExpertProfileViewModel?> GetProfileByIdAsync(int id)
+        public async Task<ProfileResponse?> GetProfileByIdAsync(int id)
         {
-            // 1. Try Users table first (registered accounts)
             var user = await _context.Users
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Id == id && u.DeletedAt == null);
 
             if (user != null)
             {
-                return new ExpertProfileViewModel
+                return new ProfileResponse
                 {
                     Id = user.Id,
                     FullName = user.FullName,
@@ -39,49 +38,22 @@ namespace backend.Services
                     Specialty = user.Specialty ?? "",
                     AvatarUrl = user.AvatarUrl,
                     CoverImageUrl = user.CoverImageUrl,
-                    IsVerified = false,
+                    IsVerified = user.IsVerified,
                     Bio = user.Bio,
                     Location = user.Location,
-                    HealthScore = 0,
+                    HealthScore = user.HealthScore,
                     ResearchArea = user.ResearchArea,
                     HighestDegree = user.HighestDegree,
                     Organization = user.Organization,
-                    Badges = new List<BadgeViewModel>()
-                };
-            }
-
-            // 2. Fallback to Experts table
-            var expert = await _context.Experts
-                .AsNoTracking()
-                .FirstOrDefaultAsync(e => e.Id == id && e.DeletedAt == null);
-
-            if (expert != null)
-            {
-                return new ExpertProfileViewModel
-                {
-                    Id = expert.Id,
-                    FullName = expert.FullName,
-                    Title = expert.Title,
-                    Specialty = expert.Specialty,
-                    AvatarUrl = expert.AvatarUrl,
-                    CoverImageUrl = expert.CoverImageUrl,
-                    IsVerified = expert.IsVerified,
-                    Bio = expert.Bio,
-                    Location = expert.Location,
-                    HealthScore = expert.HealthScore,
-                    ResearchArea = expert.ResearchArea,
-                    HighestDegree = expert.HighestDegree,
-                    Organization = expert.Organization,
-                    Badges = new List<BadgeViewModel>()
+                    Badges = new List<BadgeDto>()
                 };
             }
 
             return null;
         }
 
-        public async Task<bool> UpdateProfileAsync(int id, ProfileUpdateViewModel model)
+        public async Task<bool> UpdateProfileAsync(int id, ProfileUpdateRequest model)
         {
-            // Try Users table first
             var user = await _context.Users.FindAsync(id);
             if (user != null)
             {
@@ -99,22 +71,7 @@ namespace backend.Services
                 return await _context.SaveChangesAsync() > 0;
             }
 
-            // Fallback to Experts table
-            var expert = await _context.Experts.FindAsync(id);
-            if (expert == null) return false;
-
-            expert.FullName = model.FullName;
-            expert.Title = model.Title;
-            expert.Specialty = model.SiteTitle;
-            expert.Bio = model.Bio;
-            expert.Location = model.Location;
-            expert.ResearchArea = model.ResearchArea;
-            expert.HighestDegree = model.HighestDegree;
-            expert.Organization = model.Organization;
-            expert.UpdatedAt = DateTime.UtcNow;
-
-            _context.Experts.Update(expert);
-            return await _context.SaveChangesAsync() > 0;
+            return false;
         }
     }
 }

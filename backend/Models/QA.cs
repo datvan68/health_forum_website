@@ -36,9 +36,9 @@ public class QAAnswer
     [ForeignKey("QuestionId")]
     public QAQuestion? Question { get; set; }
 
-    public int ExpertId { get; set; }
-    [ForeignKey("ExpertId")]
-    public Expert? Expert { get; set; }
+    public int AuthorId { get; set; }
+    [ForeignKey("AuthorId")]
+    public User? Author { get; set; }
 
     public bool IsVerified { get; set; } = true;
 

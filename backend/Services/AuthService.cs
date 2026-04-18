@@ -1,4 +1,4 @@
-using backend.ViewModels;
+using backend.DTOs;
 using backend.Data;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
@@ -11,8 +11,8 @@ namespace backend.Services;
 
 public interface IAuthService
 {
-    Task<LoginResponse?> LoginAsync(LoginViewModel model);
-    Task<bool> RegisterAsync(RegisterViewModel model);
+    Task<LoginResponse?> LoginAsync(LoginRequest model);
+    Task<bool> RegisterAsync(RegisterRequest model);
 }
 
 public class AuthService : IAuthService
@@ -25,7 +25,7 @@ public class AuthService : IAuthService
         _context = context;
     }
 
-    public async Task<LoginResponse?> LoginAsync(LoginViewModel model)
+    public async Task<LoginResponse?> LoginAsync(LoginRequest model)
     {
         var user = await _context.Users
             .FirstOrDefaultAsync(u => u.Username == model.Username || u.Email == model.Username);
@@ -43,7 +43,7 @@ public class AuthService : IAuthService
         return null;
     }
 
-    public async Task<bool> RegisterAsync(RegisterViewModel model)
+    public async Task<bool> RegisterAsync(RegisterRequest model)
     {
         if (model.Password != model.ConfirmPassword) return false;
         

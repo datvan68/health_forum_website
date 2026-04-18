@@ -1,23 +1,32 @@
 "use client";
 
 import React from "react";
-import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-const categories = [
-  { name: "Tất cả bài viết", count: 124, active: true },
-  { name: "Trao đổi chất", count: 42 },
-  { name: "Y học chính xác", count: 28 },
-  { name: "Trường thọ", count: 19 },
+export const ARTICLE_CATEGORIES = [
+  "Tất cả bài viết",
+  "Trao đổi chất",
+  "Y học chính xác",
+  "Trường thọ",
 ];
+
+interface ArticlesSidebarProps {
+  selectedCategory: string;
+  onCategoryChange: (category: string) => void;
+  categoryCounts: Record<string, number>;
+}
 
 const trendingTags = [
   "#Glucose", "#Microbiome", "#CGM", "#SleepQuality"
 ];
 
-export function ArticlesSidebar() {
+export function ArticlesSidebar({ 
+  selectedCategory, 
+  onCategoryChange,
+  categoryCounts 
+}: ArticlesSidebarProps) {
   return (
     <div className="w-full flex flex-col gap-10">
       {/* Popular Categories */}
@@ -26,28 +35,32 @@ export function ArticlesSidebar() {
           Danh mục phổ biến
         </h3>
         <div className="flex flex-col gap-1">
-          {categories.map((cat, i) => (
-            <button
-              key={i}
-              className={cn(
-                "flex items-center justify-between px-4 py-3 rounded-xl transition-all group hover:bg-white hover:shadow-sm",
-                cat.active ? "bg-white shadow-sm ring-1 ring-[#003f87]/5" : "text-[#191c1e]"
-              )}
-            >
-              <span className={cn(
-                "text-[15px] font-semibold",
-                cat.active ? "text-[#003f87]" : "text-[#191c1e] group-hover:text-[#003f87]"
-              )}>
-                {cat.name}
-              </span>
-              <span className={cn(
-                "text-[12px] font-bold px-2 py-0.5 rounded-md",
-                cat.active ? "bg-[#003f87] text-white" : "text-[#727784] bg-[#eceef0]"
-              )}>
-                {cat.count}
-              </span>
-            </button>
-          ))}
+          {ARTICLE_CATEGORIES.map((cat, i) => {
+            const isActive = selectedCategory === cat;
+            return (
+              <button
+                key={i}
+                onClick={() => onCategoryChange(cat)}
+                className={cn(
+                  "flex items-center justify-between px-4 py-3 rounded-xl transition-all group hover:bg-white hover:shadow-sm",
+                  isActive ? "bg-white shadow-sm ring-1 ring-[#003f87]/5" : "text-[#191c1e]"
+                )}
+              >
+                <span className={cn(
+                  "text-[15px] font-semibold",
+                  isActive ? "text-[#003f87]" : "text-[#191c1e] group-hover:text-[#003f87]"
+                )}>
+                  {cat}
+                </span>
+                <span className={cn(
+                  "text-[12px] font-bold px-2 py-0.5 rounded-md",
+                  isActive ? "bg-[#003f87] text-white" : "text-[#727784] bg-[#eceef0]"
+                )}>
+                  {categoryCounts[cat] || 0}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
 

@@ -117,7 +117,7 @@ export default function ProfilePage() {
         />
 
         {/* Tabs Feed Section */}
-        <ProfileTabs posts={formattedPosts} />
+        <ProfileTabs posts={formattedPosts} userId={profile.id} />
       </div>
     </main>
   );

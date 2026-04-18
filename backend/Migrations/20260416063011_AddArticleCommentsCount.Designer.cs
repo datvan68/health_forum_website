@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.Data;
 
@@ -10,9 +11,11 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260416063011_AddArticleCommentsCount")]
+    partial class AddArticleCommentsCount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,6 +170,120 @@ namespace backend.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("backend.Models.Expert", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("AvatarUrl")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Bio")
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<string>("CoverImageUrl")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("HealthScore")
+                        .HasColumnType("int");
+
+                    b.Property<string>("HighestDegree")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("IsOnline")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Location")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Organization")
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("ResearchArea")
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("Specialty")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Experts");
+                });
+
+            modelBuilder.Entity("backend.Models.ExpertBadge", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<string>("IconUrl")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ExpertBadges");
+                });
+
+            modelBuilder.Entity("backend.Models.ExpertBadgeMapping", b =>
+                {
+                    b.Property<int>("ExpertId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BadgeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("EarnedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsEarned")
+                        .HasColumnType("tinyint(1)");
+
+                    b.HasKey("ExpertId", "BadgeId");
+
+                    b.HasIndex("BadgeId");
+
+                    b.ToTable("ExpertBadgeMappings");
+                });
+
             modelBuilder.Entity("backend.Models.Post", b =>
                 {
                     b.Property<int>("Id")
@@ -225,9 +342,6 @@ namespace backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -238,6 +352,9 @@ namespace backend.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("ExpertId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsVerified")
                         .HasColumnType("tinyint(1)");
 
@@ -246,7 +363,7 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
+                    b.HasIndex("ExpertId");
 
                     b.HasIndex("QuestionId");
 
@@ -359,18 +476,9 @@ namespace backend.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<int>("HealthScore")
-                        .HasColumnType("int");
-
                     b.Property<string>("HighestDegree")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
-
-                    b.Property<bool>("IsOnline")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("IsVerified")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Location")
                         .HasMaxLength(100)
@@ -415,53 +523,9 @@ namespace backend.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("backend.Models.UserBadge", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar(500)");
-
-                    b.Property<string>("IconUrl")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserBadges");
-                });
-
-            modelBuilder.Entity("backend.Models.UserBadgeMapping", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BadgeId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("EarnedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<bool>("IsEarned")
-                        .HasColumnType("tinyint(1)");
-
-                    b.HasKey("UserId", "BadgeId");
-
-                    b.HasIndex("BadgeId");
-
-                    b.ToTable("UserBadgeMappings");
-                });
-
             modelBuilder.Entity("backend.Models.Article", b =>
                 {
-                    b.HasOne("backend.Models.User", "Author")
+                    b.HasOne("backend.Models.Expert", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -478,7 +542,7 @@ namespace backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backend.Models.User", "Author")
+                    b.HasOne("backend.Models.Expert", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -489,9 +553,28 @@ namespace backend.Migrations
                     b.Navigation("Author");
                 });
 
+            modelBuilder.Entity("backend.Models.ExpertBadgeMapping", b =>
+                {
+                    b.HasOne("backend.Models.ExpertBadge", "Badge")
+                        .WithMany()
+                        .HasForeignKey("BadgeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backend.Models.Expert", "Expert")
+                        .WithMany("BadgeMappings")
+                        .HasForeignKey("ExpertId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Badge");
+
+                    b.Navigation("Expert");
+                });
+
             modelBuilder.Entity("backend.Models.Post", b =>
                 {
-                    b.HasOne("backend.Models.User", "Author")
+                    b.HasOne("backend.Models.Expert", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -508,9 +591,9 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Models.QAAnswer", b =>
                 {
-                    b.HasOne("backend.Models.User", "Author")
+                    b.HasOne("backend.Models.Expert", "Expert")
                         .WithMany()
-                        .HasForeignKey("AuthorId")
+                        .HasForeignKey("ExpertId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -520,7 +603,7 @@ namespace backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Author");
+                    b.Navigation("Expert");
 
                     b.Navigation("Question");
                 });
@@ -534,38 +617,19 @@ namespace backend.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("backend.Models.UserBadgeMapping", b =>
-                {
-                    b.HasOne("backend.Models.UserBadge", "Badge")
-                        .WithMany()
-                        .HasForeignKey("BadgeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("backend.Models.User", "User")
-                        .WithMany("BadgeMappings")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Badge");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("backend.Models.Article", b =>
                 {
                     b.Navigation("Comments");
                 });
 
+            modelBuilder.Entity("backend.Models.Expert", b =>
+                {
+                    b.Navigation("BadgeMappings");
+                });
+
             modelBuilder.Entity("backend.Models.QAQuestion", b =>
                 {
                     b.Navigation("Answers");
-                });
-
-            modelBuilder.Entity("backend.Models.User", b =>
-                {
-                    b.Navigation("BadgeMappings");
                 });
 #pragma warning restore 612, 618
         }

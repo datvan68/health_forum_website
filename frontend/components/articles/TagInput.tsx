@@ -40,10 +40,9 @@ export function TagInput({ tags, setTags, category, setCategory }: TagInputProps
             onChange={(e) => setCategory(e.target.value)}
             className="w-full bg-[#f2f4f6] text-[#191c1e] text-[16px] font-medium py-3 px-4 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all group-hover:bg-[#ebedf0]"
           >
-            <option>Dinh dưỡng</option>
-            <option>Thể hình</option>
-            <option>Sức khỏe tâm thần</option>
-            <option>Nghiên cứu lâm sàng</option>
+            <option>Trao đổi chất</option>
+            <option>Y học chính xác</option>
+            <option>Trường thọ</option>
           </select>
           <div className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none transition-transform group-hover:scale-110">
             <ChevronDown size={20} />

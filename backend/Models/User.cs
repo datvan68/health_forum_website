@@ -47,6 +47,12 @@ public class User
     [MaxLength(200)]
     public string? Organization { get; set; }
 
+    public int HealthScore { get; set; } = 0;
+    public bool IsVerified { get; set; } = false;
+    public bool IsOnline { get; set; } = false;
+
+    public List<UserBadgeMapping> BadgeMappings { get; set; } = new();
+
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }
     public DateTime? DeletedAt { get; set; }

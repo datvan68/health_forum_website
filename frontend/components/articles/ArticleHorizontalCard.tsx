@@ -91,7 +91,11 @@ export function ArticleHorizontalCard({
         <div className="mt-auto flex items-center justify-between pt-4 border-t border-[#eceef0]">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white shadow-sm ring-1 ring-[#eceef0]">
-              <img src={author.avatar} alt={author.name} className="w-full h-full object-cover" />
+              <img 
+                src={author.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(author.name)}&background=003f87&color=fff&bold=true`} 
+                alt={author.name} 
+                className="w-full h-full object-cover" 
+              />
             </div>
             <span className="text-sm font-bold text-[#003f87]">
               {author.name}

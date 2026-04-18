@@ -17,7 +17,7 @@ public class Post
 
     public int AuthorId { get; set; }
     [ForeignKey("AuthorId")]
-    public Expert? Author { get; set; }
+    public User? Author { get; set; }
 
     public int? CategoryId { get; set; }
     [ForeignKey("CategoryId")]
