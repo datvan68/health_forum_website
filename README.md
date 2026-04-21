@@ -1,5 +1,9 @@
 # Health Forum Website
 
+*Nguyên Văn Tấn Đạt – MSSV: 170124525 – Lớp: DK24TTC5*  
+*nvtdat68@gmail.com*
+*0384919086*
+
 Diễn đàn sức khoẻ cộng đồng xây dựng trên kiến trúc **Decoupled MVC** hiện đại.
 
 - `frontend/` — Next.js 16 (React 19) + TailwindCSS v3 + Framer Motion
@@ -179,3 +183,5 @@ MYSQL_ROOT_PASSWORD=your_password
 Frontend sử dụng biến `NEXT_PUBLIC_API_URL` (mặc định: `http://localhost:8080/api`).
 
 ---
+
+
