@@ -9,6 +9,7 @@ import profileData from "@/mock-data/profile.json";
 import { useEffect, useState } from "react";
 import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
 import { useRouter } from "next/navigation";
+import { API_BASE_URL } from "@/lib/api-config";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -33,7 +34,7 @@ export default function ProfilePage() {
           return;
         }
 
-        const response = await fetch(`http://localhost:5000/api/profile/${userId}`);
+        const response = await fetch(`${API_BASE_URL}/profile/${userId}`);
         if (!response.ok) {
           throw new Error("Không thể tải thông tin hồ sơ");
         }

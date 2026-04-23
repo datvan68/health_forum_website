@@ -91,9 +91,9 @@ dotnet run
 
 | Endpoint | URL |
 |---|---|
-| API Base | `http://localhost:8080/api` |
-| Health check | `http://localhost:8080/api/health` |
-| Swagger UI | `http://localhost:8080/swagger` |
+| API Base | `http://localhost:5000/api` |
+| Health check | `http://localhost:5000/api/health` |
+| Swagger UI | `http://localhost:5000/swagger` |
 
 ### 4. Chạy Frontend
 
@@ -180,7 +180,7 @@ Xem `.env.example` để biết các biến cần thiết:
 MYSQL_ROOT_PASSWORD=your_password
 ```
 
-Frontend sử dụng biến `NEXT_PUBLIC_API_URL` (mặc định: `http://localhost:8080/api`).
+Frontend sử dụng biến `NEXT_PUBLIC_API_BASE_URL` (mặc định: `http://localhost:5000/api`).
 
 ---
 

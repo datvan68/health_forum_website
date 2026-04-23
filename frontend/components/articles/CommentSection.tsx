@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { MessageSquare, Heart, CornerRightDown, Send, Bold, Italic, Link as LinkIcon, Image as ImageIcon, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { API_BASE_URL } from "@/lib/api-config";
 
 interface Comment {
   id: string;
@@ -94,7 +95,7 @@ export function CommentSection({ comments, totalComments, articleSlug, onComment
 
     setIsSubmitting(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/articles/${articleSlug}/comments`, {
+      const response = await fetch(`${API_BASE_URL}/articles/${articleSlug}/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

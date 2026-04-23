@@ -7,6 +7,7 @@ import { PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { API_BASE_URL } from "@/lib/api-config";
 
 interface Post {
   id: string | number;
@@ -40,7 +41,7 @@ export function ProfileTabs({ posts: initialPosts, userId }: ProfileTabsProps) {
     if (!window.confirm("Bạn có chắc chắn muốn xóa bài viết này không?")) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/Articles/slug/${slug}`, {
+      const response = await fetch(`${API_BASE_URL}/Articles/slug/${slug}`, {
         method: "DELETE",
       });
 
@@ -61,7 +62,7 @@ export function ProfileTabs({ posts: initialPosts, userId }: ProfileTabsProps) {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch(`http://localhost:5000/api/Articles?authorId=${userId}`);
+        const response = await fetch(`${API_BASE_URL}/Articles?authorId=${userId}`);
         if (!response.ok) throw new Error("Không thể tải bài viết của bạn");
         
         const data = await response.json();

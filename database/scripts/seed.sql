@@ -1,7 +1,7 @@
 USE HealthForumDb;
 
-INSERT INTO ForumCategories (Name, Description)
+INSERT INTO Categories (Name, Label, Description, CreatedAt)
 VALUES
-    ('General Health', 'General wellness and community support topics.'),
-    ('Nutrition', 'Healthy eating, diet plans, and food habits.'),
-    ('Mental Health', 'Stress, sleep, focus, and emotional wellbeing.');
+    ('Sức khoẻ tâm lý', 'mental-health', 'Stress, giấc ngủ, cảm xúc và sức khoẻ tinh thần.', NOW()),
+    ('Dinh dưỡng', 'nutrition', 'Chế độ ăn lành mạnh, kế hoạch dinh dưỡng.', NOW()),
+    ('Thể hình', 'fitness', 'Luyện tập, thể thao và sức bền.', NOW());

@@ -8,6 +8,7 @@ import { TagInput } from "@/components/articles/TagInput";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { API_BASE_URL } from "@/lib/api-config";
 
 export default function CreateArticlePage() {
   const router = useRouter();
@@ -54,7 +55,7 @@ export default function CreateArticlePage() {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/api/articles", {
+      const response = await fetch(`${API_BASE_URL}/articles`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -6,6 +6,7 @@ import { Pagination } from "@/components/shared/Pagination";
 import { ArticlesSidebar, ARTICLE_CATEGORIES } from "@/components/articles/ArticlesSidebar";
 import { ArticleHorizontalCard } from "@/components/articles/ArticleHorizontalCard";
 import { ChevronDown, Loader2 } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api-config";
 
 export default function ArticlesListingPage() {
   const [articles, setArticles] = useState<any[]>([]);
@@ -17,7 +18,7 @@ export default function ArticlesListingPage() {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/articles");
+        const response = await fetch(`${API_BASE_URL}/articles`);
         if (!response.ok) {
           throw new Error("Không thể tải bài viết từ máy chủ");
         }

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { CheckCircle2, FileText, Info, Loader2 } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api-config";
 
 export function CreationSidebar() {
   const [user, setUser] = useState<any>(null);
@@ -17,7 +18,7 @@ export function CreationSidebar() {
         const parsed = JSON.parse(storedUser);
         const userId = parsed.id || parsed.Id;
 
-        const response = await fetch(`http://localhost:5000/api/profile/${userId}`);
+        const response = await fetch(`${API_BASE_URL}/profile/${userId}`);
         if (response.ok) {
           const data = await response.json();
           setUser(data);

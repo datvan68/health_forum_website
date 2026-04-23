@@ -7,6 +7,7 @@ import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useParams } from "next/navigation";
+import { API_BASE_URL } from "@/lib/api-config";
 
 export default function ArticleDetailPage() {
   const params = useParams();
@@ -20,7 +21,7 @@ export default function ArticleDetailPage() {
   useEffect(() => {
     const fetchArticleDetail = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/articles/${slug}`);
+        const response = await fetch(`${API_BASE_URL}/articles/${slug}`);
         if (!response.ok) {
           throw new Error("Không thể tải chi tiết bài viết");
         }
@@ -99,7 +100,7 @@ export default function ArticleDetailPage() {
                 // Re-fetch article data to get latest comments and counts
                 const fetchArticleDetail = async () => {
                   try {
-                    const response = await fetch(`http://localhost:5000/api/articles/${slug}`);
+                    const response = await fetch(`${API_BASE_URL}/articles/${slug}`);
                     if (response.ok) {
                       const data = await response.json();
                       setArticle(data.article);
